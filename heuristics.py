@@ -1,6 +1,6 @@
 import numpy as np
 
-def manhattan_distance_heuristic(board, goal_board) -> int:
+def manhattan_distance(board, goal_board) -> int:
     n = len(board)
     goal_positions = {}
     total_distance = 0
@@ -22,13 +22,14 @@ def manhattan_distance_heuristic(board, goal_board) -> int:
     return total_distance
 
 
-def misplaced_tiles_heuristic(board, goal_board) -> int:
+def hamming_distance(board, goal_board) -> int:
     misplaced = np.sum(board != goal_board) - 1
     return misplaced
 
-def linear_conflict_heuristic(board, goal_board) -> int:
-    manhattan = manhattan_distance_heuristic(board, goal_board)
-    n = board.shape[0]
+
+def linear_conflict(board, goal_board) -> int:
+    manhattan = manhattan_distance(board, goal_board)
+    n = len(board)
     conflict_count = 0
 
     for i in range(n):

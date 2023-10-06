@@ -1,6 +1,7 @@
 import sys
 import re
 import numpy as np
+import argparse
 
 def determine_goal_state(initial_state):
     n = initial_state.shape[0]
@@ -45,3 +46,11 @@ def parse_initial_state(file_path):
         sys.exit(1)
 
     return board
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Solve the n-puzzle problem using A* algorithm.")
+    parser.add_argument("file", help="The file containing the initial state of the puzzle.")
+    parser.add_argument("-m", "--method", help="The method to use to solve the puzzle.", choices=["hamming", "manhattan", "linear_conflict"], default="manhattan")
+    args = parser.parse_args()
+    return args.file, args.method

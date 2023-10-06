@@ -169,7 +169,7 @@ def main():
         print("The puzzle is not solvable.")
         sys.exit(1)
     
-    heuristic_function = manhattan_distance_heuristic
+    heuristic_function = manhattan_distance
     
     time_start = time.time()
     solution = a_star_search(initial_state, goal_state, heuristic_function)

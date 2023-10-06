@@ -1,8 +1,6 @@
 import numpy as np
 
-
 def get_taxicab_distance(board, solved):
-    size = board.shape[0]
     pi = np.argwhere(board == 0)[0]
     qi = np.argwhere(solved == 0)[0]
     return abs(pi[0] - qi[0]) + abs(pi[1] - qi[1])
@@ -23,4 +21,4 @@ def count_inversions(board, solved):
 def is_solvable(board, solved):
     taxicab_distance = get_taxicab_distance(board, solved)
     num_inversions = count_inversions(board, solved)
-    return (taxicab_distance % 2 == 0) if (board.shape[0] % 2 == 0) else (num_inversions % 2 == 0)
+    return (taxicab_distance % 2 == 0) == (num_inversions % 2 == 0)  

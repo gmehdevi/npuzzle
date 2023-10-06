@@ -4,12 +4,11 @@ import argparse
 from heuristics import *
 import re
 import time
+from parse_arg import *
 from queue import PriorityQueue
 from solvable import is_solvable
-from parse_arg import parse_initial_state, determine_goal_state
-from collections import deque
-from functools import partial
 import numpy as np
+from heuristics import *
 
 TRANSITION_COST = 1
 
@@ -72,32 +71,32 @@ def a_star_search(start, goal, h):
     return None
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python npuzzle_parser.py <file_path>")
-        sys.exit(1)
+    file_path, h = parse_args()
 
-    file_path = sys.argv[1]
+    h_dict = {"manhattan": manhattan_distance, "hamming": hamming_distance, "linear_conflict": linear_conflict}
+
     initial_state = parse_initial_state(file_path)
-    print(f"Initial State:");print(initial_state)
+    print(f"Initial State:");print(initial_state);print()
 
     goal_state = determine_goal_state(initial_state)
-    print("\nGoal State:");print(goal_state);print()
+    print("Goal State:");print(goal_state);print()
     
     if not is_solvable(initial_state, goal_state):
         print("The puzzle is not solvable.")
         sys.exit(1)
 
-    heuristic_function = manhattan_distance_heuristic
-
     initial_state = tuple(tuple(row) for row in initial_state)
     goal_state = tuple(tuple(row) for row in goal_state)
 
+    print(f"Using {h} heuristic.")
+
     time_start = time.time()
-    solution = a_star_search(initial_state, goal_state, heuristic_function)
+    solution = a_star_search(initial_state, goal_state, h_dict[h])
     time_end = time.time()
 
     if solution is not None:
         with open("solution.txt", "w") as f:
+            print(f"Solution of {file_path}:", file=f)
             for step, state in enumerate(solution):
                 print(f"Step {step}:\n{np.array(state)}", file=f)
 
