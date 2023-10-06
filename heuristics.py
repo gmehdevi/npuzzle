@@ -23,7 +23,11 @@ def manhattan_distance(board, goal_board) -> int:
 
 
 def hamming_distance(board, goal_board) -> int:
-    misplaced = np.sum(board != goal_board) - 1
+    misplaced = 0
+    for i in range(len(board)):
+        for j in range(len(board)):
+            if board[i][j] != goal_board[i][j]:
+                misplaced += 1
     return misplaced
 
 
@@ -34,18 +38,18 @@ def linear_conflict(board, goal_board) -> int:
 
     for i in range(n):
         for j in range(n):
-            if board[i, j] != 0:
-                tile_value = board[i, j]
+            if board[i][j] != 0:
+                tile_value = board[i][j]
                 goal_position = np.argwhere(goal_board == tile_value)[0]
 
                 if goal_position[0] == i:
                     for k in range(j + 1, n):
-                        if board[i, k] != 0 and goal_board[i, k] != 0 and board[i, k] < tile_value:
+                        if board[i][k] != 0 and goal_board[i][k] != 0 and board[i][k] < tile_value:
                             conflict_count += 1
 
                 if goal_position[1] == j:
                     for k in range(i + 1, n):
-                        if board[k, j] != 0 and goal_board[k, j] != 0 and board[k, j] < tile_value:
+                        if board[k][j] != 0 and goal_board[k][j] != 0 and board[k][j] < tile_value:
                             conflict_count += 1
 
     return manhattan + (2 * conflict_count)

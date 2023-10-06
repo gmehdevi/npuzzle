@@ -48,16 +48,16 @@ def reconstruct_path(closed_set, current):
 def a_star_search(start, goal, h):
     open_set = PriorityQueue()
     open_set.put((h(start, goal), start))
-    came_from = {}
+    closed_set = {}
     g_score = {start: 0}
 
     while not open_set.empty():
         _, current = open_set.get()
 
         if current == goal:
-            print(f"Space complexity: {open_set.qsize() + len(came_from)}")
-            print(f"Time complexity: {len(came_from)}")
-            return reconstruct_path(came_from, current)
+            print(f"Space complexity: {open_set.qsize()}")
+            print(f"Time complexity: {len(closed_set)}")
+            return reconstruct_path(closed_set, current)
 
         for neighbor in possible_actions(current):
             tentative_g_score = g_score[current] + TRANSITION_COST
@@ -66,7 +66,7 @@ def a_star_search(start, goal, h):
                 g_score[neighbor] = tentative_g_score
                 f_score = tentative_g_score + h(neighbor, goal)
                 open_set.put((f_score, neighbor))
-                came_from[neighbor] = current
+                closed_set[neighbor] = current
 
     return None
 
